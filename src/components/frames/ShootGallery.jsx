@@ -1,10 +1,4 @@
-// src/components/frames/ShootGallery.jsx
-//
-// Renders a full page of BTS frames grouped by shoot.
-// Each shoot is a titled section with a masonry-style grid of FrameCards.
-// Clicking a frame opens the built-in Lightbox (keyboard navigable).
-// Fetches shoots via getShoots(), then lazily fetches each shoot's frames
-// when the user expands that section (accordion pattern for performance).
+
 
 import { useState, useEffect } from 'react'
 import { getShoots, getShootFrames } from '../../hooks/useFrames'

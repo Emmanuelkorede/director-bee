@@ -1,14 +1,3 @@
-// src/components/ui/Spinner.jsx
-//
-// Minimal CSS-only loading spinner.
-// Used inside Button (loading state) and standalone page/section loaders.
-//
-// Sizes: 'xs' | 'sm' | 'md' | 'lg'
-//
-// Usage:
-//   <Spinner />
-//   <Spinner size="lg" color="accent" />
-//   <Spinner label="Uploading frames…" />
 
 const CSS = `
   @keyframes spin {
@@ -79,15 +68,7 @@ function injectCSS(id, css) {
   document.head.appendChild(tag)
 }
 
-/**
- * @param {{
- *   size?:    'xs' | 'sm' | 'md' | 'lg',
- *   color?:   'white' | 'accent' | 'muted',
- *   label?:   string,     — optional text beneath/beside the spinner
- *   inline?:  boolean,    — row layout (spinner + label side by side)
- *   className?: string,
- * }} props
- */
+
 export function Spinner({
   size      = 'md',
   color     = 'white',

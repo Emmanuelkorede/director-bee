@@ -1,15 +1,3 @@
-// src/components/ui/Button.jsx
-//
-// Core button primitive used across the dashboard and public site.
-//
-// Variants: 'primary' | 'secondary' | 'ghost' | 'danger'
-// Sizes:    'sm' | 'md' | 'lg'
-//
-// Usage:
-//   <Button onClick={save}>Save Changes</Button>
-//   <Button variant="danger" size="sm" onClick={del}>Delete</Button>
-//   <Button variant="ghost" isLoading>Uploading…</Button>
-//   <Button as="a" href="/contact" variant="primary">Book a Project</Button>
 
 import { Spinner } from './Spinner'
 
@@ -147,20 +135,7 @@ function injectCSS(id, css) {
   document.head.appendChild(tag)
 }
 
-/**
- * @param {{
- *   children:    React.ReactNode,
- *   variant?:   'primary' | 'secondary' | 'ghost' | 'danger',
- *   size?:      'sm' | 'md' | 'lg',
- *   isLoading?: boolean,
- *   isFullWidth?: boolean,
- *   iconOnly?:  boolean,
- *   as?:        string,  — render as a different element, e.g. 'a'
- *   disabled?:  boolean,
- *   className?: string,
- *   [key: string]: any,  — any other valid HTML button / anchor props
- * }} props
- */
+
 export function Button({
   children,
   variant     = 'primary',

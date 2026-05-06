@@ -1,8 +1,3 @@
-// src/components/dashboard/VideoManager.jsx
-//
-// Dashboard panel — full video CRUD.
-// Top: "Add Video" form. Below: sortable table of all videos via EditRow.
-// Tracks featured count live to pass the cap signal down to each Toggle.
 
 import { useState, useEffect } from 'react'
 import {

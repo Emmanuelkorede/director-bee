@@ -1,17 +1,6 @@
-// src/components/dashboard/FramesUploader.jsx
-//
-// Three fixes over the previous version:
-//   1. Drop zone actually works — uses a <label htmlFor> wrapping the real
-//      <input type="file"> instead of a div + JS .click() hack.
-//   2. No separate shoot dropdown sitting idle — shoot is auto-assigned:
-//        - 0 shoots  → zone shows "create a shoot first"
-//        - 1 shoot   → auto-selected, zone opens immediately
-//        - >1 shoots → inline mini-picker appears inside the zone itself,
-//                      then zone opens once picked
-//   3. Only imports what is actually used from useFrames
-//      (removed: deleteFrame, getShootFrames, updateShoot)
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+
+import { useState, useEffect, useCallback } from 'react'
 import {
   getShoots,
   createShoot,
@@ -217,7 +206,6 @@ function injectCSS(id, css) {
   document.head.appendChild(tag)
 }
 
-// ── ShootRow ──────────────────────────────────────────────────────────────────
 
 function ShootRow({ shoot, onDeleted }) {
   const [confirming, setConfirming] = useState(false)
@@ -267,7 +255,6 @@ export function FramesUploader() {
   const [isUploading, setIsUploading] = useState(false)
 
   const [newTitle,  setNewTitle]  = useState('')
-  const [newDesc,   setNewDesc]   = useState('')
   const [creating,  setCreating]  = useState(false)
   const [createErr, setCreateErr] = useState(null)
 
@@ -305,7 +292,6 @@ export function FramesUploader() {
         return next
       })
       setNewTitle('')
-      setNewDesc('')
     }
     setCreating(false)
   }

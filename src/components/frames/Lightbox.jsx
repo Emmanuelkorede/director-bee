@@ -1,15 +1,4 @@
-// src/components/frames/Lightbox.jsx
-//
-// Standalone full-screen image lightbox.
-// Keyboard: Escape = close, ArrowLeft = prev, ArrowRight = next.
-// Used by ShootGallery — each ShootBlock passes its own frames array.
-//
-// Props:
-//   frames       — array of frame objects { id, storage_url, caption }
-//   currentIndex — number | null  (null = closed)
-//   onClose      — () => void
-//   onPrev       — () => void
-//   onNext       — () => void
+
 
 import { useEffect, useRef, useCallback } from 'react'
 

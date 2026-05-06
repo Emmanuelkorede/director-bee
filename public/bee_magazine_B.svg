@@ -1,0 +1,15 @@
+<svg width="100%" viewBox="0 0 410 430" xmlns="http://www.w3.org/2000/svg" style="">
+
+  <!-- Cream background -->
+  <rect width="400" height="420" fill="#F5EFE0" style="fill:rgb(245, 239, 224);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+  <!-- Large background B — cream/light tan, slightly offset left -->
+  <text x="80" y="320" font-family="Georgia, 'Times New Roman', serif" font-size="320" font-weight="bold" fill="#E8D9B8" letter-spacing="-10" style="fill:rgb(232, 217, 184);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Georgia, &quot;Times New Roman&quot;, serif;font-size:320px;font-weight:700;text-anchor:start;dominant-baseline:auto">B</text>
+
+  <!-- Foreground B — dark brown, shifted right and slightly down -->
+  <text x="128" y="345" font-family="Georgia, 'Times New Roman', serif" font-size="260" font-weight="bold" fill="#4A2C10" letter-spacing="-10" style="fill:rgb(74, 44, 16);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Georgia, &quot;Times New Roman&quot;, serif;font-size:260px;font-weight:700;text-anchor:start;dominant-baseline:auto">B</text>
+
+  <!-- Small 'ee' script sitting inside the curve of the dark B -->
+  <text x="148" y="290" font-family="Georgia, 'Times New Roman', serif" font-size="62" font-weight="400" font-style="italic" fill="#C8A96A" opacity="0.9" style="fill:rgb(200, 169, 106);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.9;font-family:Georgia, &quot;Times New Roman&quot;, serif;font-size:62px;font-weight:400;font-style:italic;text-anchor:start;dominant-baseline:auto">ee</text>
+
+</svg>

@@ -3,7 +3,7 @@
 import { Routes, Route } from 'react-router'
 
 // Layout shell
-import { Layout }         from './components/layout/Layouy'
+import { Layout } from './components/layout/layouy'
 import { ProtectedRoute } from './components/auth/ProtectedRoute'
 
 // Public pages

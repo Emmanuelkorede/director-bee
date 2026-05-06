@@ -72,7 +72,7 @@ export async function deleteShoot(shootId) {
 
 
 export async function uploadFrame(shootId, file, options = {}) {
-  const { caption = '', sortOrder = 0 } = options
+  const { sortOrder = 0 } = options
 
   const safeName    = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
   const storagePath = `${shootId}/${Date.now()}-${safeName}`

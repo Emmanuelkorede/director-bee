@@ -1,7 +1,3 @@
-// src/pages/Rollout.jsx
-//
-// Archive of rollout visuals — social teasers, trailers, promos.
-// Same layout pattern as MusicVideos but fetches category='rollout'.
 
 import { useState, useEffect } from 'react'
 import { getRolloutVideos } from '../hooks/useVideos'

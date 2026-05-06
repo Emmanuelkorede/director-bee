@@ -1,9 +1,4 @@
-// src/components/frames/FrameCard.jsx
-//
-// A single BTS still image card.
-// Renders a lazy-loaded image from Supabase Storage CDN.
-// Clicking calls onClick() to open the Lightbox.
-// Optional caption fades in on hover.
+
 
 import { useState } from 'react'
 
