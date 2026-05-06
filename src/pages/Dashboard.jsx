@@ -3,143 +3,136 @@ import { useAuth } from '../hooks/useAuth'
 import { VideoManager } from '../components/dashboard/VideoManager'
 import { FramesUploader } from '../components/dashboard/FramesUploader'
 import { Button } from '../components/ui/Button'
-import { RiVideoLine, RiImageLine, RiLogoutCircleRLine, RiUserLine, RiDashboardLine } from 'react-icons/ri'
+import { RiVideoLine, RiImageLine, RiLogoutCircleRLine, RiUserLine } from 'react-icons/ri'
 
 const CSS = `
   .dash-page {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: #050505; /* Deep black for maximum contrast */
+    background: #050505;
     color: #FFFFFF;
   }
 
-  /* ── High-Visibility Top Bar ── */
+  /* ── Header ── */
   .dash-topbar {
     position: sticky;
     top: 0;
     z-index: 100;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 40px;
+    padding: 20px 24px;
     background: #000000;
-    border-bottom: 2px solid #222; /* Thicker, visible border */
+    border-bottom: 1px solid #222;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
-  .dash-topbar__left {
-    display: flex;
-    align-items: center;
-    gap: 24px;
+  @media (min-width: 768px) {
+    .dash-topbar {
+      height: 80px;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 40px;
+    }
   }
 
   .dash-wordmark {
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: 22px;
+    font-size: 20px;
     letter-spacing: -0.02em;
     text-transform: uppercase;
     color: #FFFFFF;
     text-decoration: none;
+    text-align: center;
   }
 
-  .dash-wordmark span {
-    color: var(--c-accent); /* Your brown/accent color */
-  }
+  .dash-wordmark span { color: var(--c-accent); }
 
-  .dash-status-pill {
+  .dash-topbar__right {
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 6px 12px;
-    border: 1px solid #333;
-    border-radius: 100px;
-  }
-
-  .dash-status-pill i {
-    width: 6px;
-    height: 6px;
-    background: #50fa7b; /* Green for "Live" status */
-    border-radius: 50%;
-  }
-
-  .dash-status-pill span {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #888;
-  }
-
-  /* ── High-Contrast Navigation ── */
-  .dash-nav-container {
-    background: #0A0A0A;
-    padding: 0 40px;
-    border-bottom: 1px solid #222;
-  }
-
-  .dash-tabs {
-    display: flex;
-    gap: 4px;
-  }
-
-  .dash-tab {
-    background: transparent;
-    border: none;
-    padding: 24px 30px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #666; /* Muted by default */
-    cursor: pointer;
-    display: flex;
-    align-items: center;
+    justify-content: space-between;
     gap: 12px;
-    transition: all 0.2s ease;
-    border-bottom: 3px solid transparent;
-  }
-
-  .dash-tab:hover {
-    color: #FFF;
-    background: rgba(255,255,255,0.03);
-  }
-
-  .dash-tab--active {
-    color: var(--c-accent) !important;
-    border-bottom-color: var(--c-accent);
-  }
-
-  .dash-tab svg {
-    font-size: 20px;
-  }
-
-  /* ── Main Content Area ── */
-  .dash-content {
-    flex: 1;
-    padding: 60px 40px;
-    width: 100%;
-    max-width: 1600px;
-    margin: 0 auto;
   }
 
   .dash-user-badge {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
     font-family: var(--font-mono);
-    font-size: 11px;
-    color: #AAA;
-    margin-right: 20px;
+    font-size: 10px;
+    color: #888;
+    background: rgba(255,255,255,0.05);
+    padding: 6px 12px;
+    border-radius: 4px;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  @media (max-width: 800px) {
-    .dash-topbar, .dash-nav-container { padding: 0 20px; }
-    .dash-tab { padding: 20px 15px; font-size: 10px; }
-    .dash-user-badge { display: none; }
+  /* ── Mobile-First Nav ── */
+  .dash-nav-container {
+    background: #0A0A0A;
+    border-bottom: 1px solid #222;
+  }
+
+  .dash-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .dash-tab {
+    background: transparent;
+    border: none;
+    padding: 16px 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #555;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column; /* Stack icon and text on mobile */
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    border-bottom: 2px solid transparent;
+  }
+
+  @media (min-width: 768px) {
+    .dash-tabs { display: flex; width: auto; gap: 4px; }
+    .dash-tab { 
+      flex-direction: row; 
+      padding: 24px 30px; 
+      font-size: 12px; 
+      border-bottom-width: 3px;
+    }
+  }
+
+  .dash-tab--active {
+    color: var(--c-accent) !important;
+    border-bottom-color: var(--c-accent);
+    background: rgba(var(--c-accent-rgb), 0.05);
+  }
+
+  .dash-tab svg { font-size: 18px; }
+
+  /* ── Content ── */
+  .dash-content {
+    flex: 1;
+    padding: 32px 20px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 768px) {
+    .dash-content { padding: 60px 40px; }
   }
 `
 
@@ -152,7 +145,7 @@ function injectCSS(id, css) {
 }
 
 export default function Dashboard() {
-  injectCSS('dash-v2-css', CSS)
+  injectCSS('dash-mobile-fixed-css', CSS)
 
   const { user, logout } = useAuth()
   const [activeTab, setActiveTab] = useState('videos')
@@ -165,56 +158,48 @@ export default function Dashboard() {
 
   return (
     <div className="dash-page">
-      {/* ── Header ── */}
       <header className="dash-topbar">
-        <div className="dash-topbar__left">
-          <a href="/dashboard" className="dash-wordmark">
-            Director <span>Bee</span>
-          </a>
-          <div className="dash-status-pill">
-            <i />
-            <span>System Active</span>
-          </div>
-        </div>
+        <a href="/dashboard" className="dash-wordmark">
+          Director <span>Bee</span>
+        </a>
 
-        <div className="dash-topbar__right" style={{ display: 'flex', alignItems: 'center' }}>
+        <div className="dash-topbar__right">
           <div className="dash-user-badge">
             <RiUserLine />
-            {user?.email}
+            <span>{user?.email?.split('@')[0]}</span>
           </div>
           <Button
             variant="outline"
+            size="sm"
             onClick={handleLogout}
             isLoading={isLoggingOut}
-            style={{ border: '1px solid #444', color: '#FFF' }}
+            style={{ border: '1px solid #333', fontSize: '10px', height: '32px' }}
           >
-            <RiLogoutCircleRLine style={{ marginRight: '8px' }} />
-            Logout
+            <RiLogoutCircleRLine />
+            <span style={{ marginLeft: '6px' }}>Exit</span>
           </Button>
         </div>
       </header>
 
-      {/* ── Navigation ── */}
       <div className="dash-nav-container">
-        <nav className="dash-tabs" role="tablist">
+        <nav className="dash-tabs">
           <button
             className={`dash-tab ${activeTab === 'videos' ? 'dash-tab--active' : ''}`}
             onClick={() => setActiveTab('videos')}
           >
             <RiVideoLine />
-            Library
+            <span>Library</span>
           </button>
           <button
             className={`dash-tab ${activeTab === 'frames' ? 'dash-tab--active' : ''}`}
             onClick={() => setActiveTab('frames')}
           >
             <RiImageLine />
-            Frames
+            <span>Frames</span>
           </button>
         </nav>
       </div>
 
-      {/* ── Content ── */}
       <main className="dash-content">
         {activeTab === 'videos' ? <VideoManager /> : <FramesUploader />}
       </main>
