@@ -252,10 +252,7 @@ export function TheaterModal({ video, onClose }) {
         )}
       </div>
 
-      {/* Keyboard hint */}
-      <p className="theater-hint" aria-hidden="true">
-        Press Esc to close
-      </p>
+
     </div>
   )
 }

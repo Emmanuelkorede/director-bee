@@ -1,9 +1,4 @@
-// src/components/cinema/VideoCard.jsx
-//
-// A single grid tile. Loads the YouTube maxresdefault thumbnail,
-// falls back to hqdefault if the high-res image returns a 404
-// (YouTube doesn't guarantee maxresdefault for every video).
-// Clicking calls onCick() — the grid opens TheaterModal with this video.
+
 
 import { useState } from 'react'
 import { getYoutubeThumbnail } from '../../hooks/useVideos'
