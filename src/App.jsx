@@ -13,6 +13,7 @@ import { Rollout }     from './pages/Rollout'
 import { Frames }      from './pages/Frames'
 import { About }       from './pages/About'
 import { Contact }     from './pages/Contact'
+import { MobileContent } from './pages/MoileContents'
 
 // Auth + private pages
 import Login     from './pages/Login'
@@ -27,6 +28,7 @@ function App() {
         <Route path="/"             element={<Home />}        />
         <Route path="music-videos"  element={<MusicVideos />} />
         <Route path="rollout"       element={<Rollout />}     />
+        <Route path="mobile-content" element={<MobileContent />} />
         <Route path="frames"        element={<Frames />}      />
         <Route path="about"         element={<About />}       />
         <Route path="contact"       element={<Contact />}     />

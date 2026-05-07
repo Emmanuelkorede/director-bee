@@ -4,11 +4,11 @@ import { RiCheckLine } from 'react-icons/ri'
 
 const CSS = `
   .contact-page {
-    padding: 60px 48px; /* Reduced from 100px */
+    padding: 60px 48px;
     min-height: 100vh;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 60px; /* Reduced from 100px */
+    gap: 60px;
     align-items: start;
     background: #000;
   }
@@ -21,18 +21,18 @@ const CSS = `
     letter-spacing: 0.3em;
     text-transform: uppercase; 
     color: var(--c-accent);
-    margin-bottom: 16px; /* Reduced from 24px */
+    margin-bottom: 16px;
     display: block;
   }
 
   .contact-h1 {
     font-family: var(--font-display);
     font-weight: 700; 
-    font-size: clamp(36px, 5vw, 64px); /* Slightly smaller scale */
+    font-size: clamp(36px, 5vw, 64px);
     letter-spacing: -0.02em; 
     color: var(--c-white);
     line-height: 1.1; 
-    margin-bottom: 24px; /* Reduced from 32px */
+    margin-bottom: 24px;
     text-transform: uppercase;
   }
 
@@ -49,7 +49,7 @@ const CSS = `
     color: var(--c-muted); 
     line-height: 1.6;
     max-width: 380px; 
-    margin-bottom: 40px; /* Reduced from 60px */
+    margin-bottom: 40px;
   }
 
   .contact-details { display: flex; flex-direction: column; gap: 24px; }
@@ -86,8 +86,8 @@ const CSS = `
   .contact-form-wrap {
     display: flex;
     flex-direction: column;
-    gap: 24px; /* Reduced from 32px */
-    padding: 32px; /* Reduced from 48px */
+    gap: 24px;
+    padding: 32px;
     background: #0a0a0a;
     border: 1px solid var(--c-border);
   }
@@ -105,7 +105,7 @@ const CSS = `
   .contact-input,
   .contact-select,
   .contact-textarea {
-    background: #000; /* Explicit black background */
+    background: #000;
     border: 1px solid var(--c-border);
     color: var(--c-white);
     font-family: var(--font-primary);
@@ -115,7 +115,7 @@ const CSS = `
     outline: none;
     transition: all 0.3s ease;
     border-radius: 0;
-    -webkit-appearance: none; /* Modern look for select */
+    -webkit-appearance: none;
   }
 
   .contact-select {
@@ -126,7 +126,6 @@ const CSS = `
     padding-right: 40px;
   }
 
-  /* Ensure dropdown options are black */
   .contact-select option {
     background-color: #000;
     color: #fff;
@@ -202,18 +201,27 @@ function injectCSS(id, css) {
   document.head.appendChild(tag)
 }
 
-const DIRECTOR_EMAIL = 'job21blessing@gmail.com'
+const DIRECTOR_EMAIL = 'officialdirectorbee@gmail.com'
 
 const PROJECT_TYPES = [
   'Music Video',
   'Rollout Campaign',
   'Short Film',
+  'Mobile Content',
   'Brand / Commercial',
   'Documentary',
   'Other',
 ]
 
-const EMPTY = { name: '', email: '', artist: '', type: '', timeline: '', message: '' }
+const BUDGET_RANGES = [
+  'Below ₦1M',
+  '₦1M - ₦2M',
+  '₦2M - ₦4M',
+  '₦4M - ₦7M',
+  '₦10M+',
+]
+
+const EMPTY = { email: '', phone: '', artist: '', type: '', timeline: '', hasConcept: '', budget: '', message: '' }
 
 export function Contact() {
   injectCSS('contact-css', CSS)
@@ -226,7 +234,6 @@ export function Contact() {
 
   function validate() {
     const errs = {}
-    if (!form.name.trim()) errs.name = 'Required'
     if (!form.email.trim()) errs.email = 'Required'
     if (!/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Invalid email'
     if (!form.message.trim()) errs.message = 'Message required'
@@ -238,10 +245,12 @@ export function Contact() {
       `Project Inquiry${form.artist ? ` — ${form.artist}` : ''}`
     )
     const body = encodeURIComponent(
-      `Name: ${form.name}\n` +
       `Email: ${form.email}\n` +
+      `Phone/WhatsApp: ${form.phone || '—'}\n` +
       `Artist/Brand: ${form.artist || '—'}\n` +
       `Type: ${form.type || '—'}\n` +
+      `Has Concept: ${form.hasConcept || '—'}\n` +
+      `Budget Range: ${form.budget || '—'}\n` +
       `Timeline: ${form.timeline || '—'}\n\n` +
       `Message:\n${form.message}`
     )
@@ -259,7 +268,7 @@ export function Contact() {
   return (
     <main className="contact-page">
       <div className="contact-info">
-        <span className="contact-eyebrow">Inquiries</span>
+        <span className="contact-eyebrow">  Start A Project</span>
         <h1 className="contact-h1">
           Let's build
           <em>The Vision.</em>
@@ -304,28 +313,46 @@ export function Contact() {
           <>
             <div className="contact-row">
               <div className="contact-field">
-                <label>Name *</label>
-                <input className="contact-input" value={form.name} onChange={f('name')} placeholder="Director Bee" />
-                {errors.name && <span className="contact-field-err">{errors.name}</span>}
-              </div>
-              <div className="contact-field">
                 <label>Email *</label>
                 <input className="contact-input" type="email" value={form.email} onChange={f('email')} placeholder="yourmail@gmail.com" />
                 {errors.email && <span className="contact-field-err">{errors.email}</span>}
               </div>
+              <div className="contact-field">
+                <label>Phone / WhatsApp</label>
+                <input className="contact-input" value={form.phone} onChange={f('phone')} placeholder="+234..." />
+              </div>
             </div>
 
-            <div className="contact-field">
-              <label>Artist / Brand</label>
-              <input className="contact-input" value={form.artist} onChange={f('artist')} placeholder="Who are we filming?" />
+            <div className="contact-row">
+              <div className="contact-field">
+                <label>Artist / Brand</label>
+                <input className="contact-input" value={form.artist} onChange={f('artist')} placeholder="Who are we filming?" />
+              </div>
+              <div className="contact-field">
+                <label>Project Type</label>
+                <select className="contact-select" value={form.type} onChange={f('type')}>
+                  <option value="">Select Project Type</option>
+                  {PROJECT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+                </select>
+              </div>
             </div>
 
-            <div className="contact-field">
-              <label>Project Type</label>
-              <select className="contact-select" value={form.type} onChange={f('type')}>
-                <option value="">Select Project Type</option>
-                {PROJECT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
-              </select>
+            <div className="contact-row">
+              <div className="contact-field">
+                <label>Do you have a concept?</label>
+                <select className="contact-select" value={form.hasConcept} onChange={f('hasConcept')}>
+                  <option value="">Select Option</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div className="contact-field">
+                <label>Budget Range</label>
+                <select className="contact-select" value={form.budget} onChange={f('budget')}>
+                  <option value="">Select Range</option>
+                  {BUDGET_RANGES.map((r) => <option key={r} value={r}>{r}</option>)}
+                </select>
+              </div>
             </div>
 
             <div className="contact-field">
@@ -340,7 +367,7 @@ export function Contact() {
             </div>
 
             <Button onClick={handleSubmit}>
-              Send Inquiry
+              Book  A Shoot
             </Button>
           </>
         )}

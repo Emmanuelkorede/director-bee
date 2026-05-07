@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import { updateVideo, deleteVideo, toggleFeatured } from '../../hooks/useVideos'
 import { extractYoutubeId, getThumbnailUrl } from '../../lib/youtube'
@@ -88,6 +87,7 @@ const CSS = `
   .erow__edit-actions {
     grid-column: 1 / -1;
     display: flex; gap: 10px; justify-content: flex-end; padding-top: 4px;
+    align-items: center;
   }
 
   .erow__error {
@@ -104,10 +104,11 @@ const CSS = `
   }
 
   @media (max-width: 768px) {
-    .erow { grid-template-columns: 56px 1fr 120px; }
-    .erow__category, .erow__featured { display: none; }
+    .erow { grid-template-columns: 56px 1fr 44px 110px; }
+    .erow__category { display: none; }
+    .erow__featured { padding: 0 4px; }
+    .erow__featured span { display: none; } /* Hide text on mobile, keep icon */
     .erow__edit-form { grid-template-columns: 1fr; }
-    .erow__field--full { grid-column: 1 / -1; }
   }
 `
 
@@ -115,27 +116,26 @@ function injectCSS(id, css) {
   if (typeof document === 'undefined') return
   if (document.getElementById(id)) return
   const tag = document.createElement('style')
-  tag.id = id
-  tag.textContent = css
+  tag.id = id; tag.textContent = css
   document.head.appendChild(tag)
 }
 
 export function EditRow({ video, featuredCount, onUpdated, onDeleted }) {
   injectCSS('erow-css', CSS)
 
-  const [isEditing,     setIsEditing]     = useState(false)
-  const [isDeleting,    setIsDeleting]    = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
-  const [isTogglingF,   setIsTogglingF]   = useState(false)
-  const [isSaving,      setIsSaving]      = useState(false)
-  const [error,         setError]         = useState(null)
+  const [isTogglingF, setIsTogglingF] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
+  const [error, setError] = useState(null)
 
   const [draft, setDraft] = useState({
-    title:       video.title       ?? '',
+    title: video.title ?? '',
     artist_name: video.artist_name ?? '',
-    youtube_id:  video.youtube_id  ?? '',
-    category:    video.category    ?? 'music_video',
-    sort_order:  video.sort_order  ?? 0,
+    youtube_id: video.youtube_id ?? '',
+    category: video.category ?? 'music_video',
+    sort_order: video.sort_order ?? 0,
   })
 
   const atCap = featuredCount >= 10
@@ -162,13 +162,13 @@ export function EditRow({ video, featuredCount, onUpdated, onDeleted }) {
     setIsSaving(true)
     const { data, error } = await updateVideo(video.id, {
       ...draft,
-      youtube_id:  resolvedId,
-      title:       draft.title.trim(),
+      youtube_id: resolvedId,
+      title: draft.title.trim(),
       artist_name: draft.artist_name.trim() || null,
-      sort_order:  Number(draft.sort_order),
+      sort_order: Number(draft.sort_order),
     })
     if (error) { setError(error.message) }
-    else       { onUpdated(data); setIsEditing(false) }
+    else { onUpdated(data); setIsEditing(false) }
     setIsSaving(false)
   }
 
@@ -176,15 +176,43 @@ export function EditRow({ video, featuredCount, onUpdated, onDeleted }) {
     setIsDeleting(true); setError(null)
     const { error } = await deleteVideo(video.id)
     if (error) { setError(error.message); setIsDeleting(false) }
-    else        { onDeleted(video.id) }
+    else { onDeleted(video.id) }
   }
 
-  const thumbSrc = video.custom_thumbnail_url
-    || getThumbnailUrl(video.youtube_id, 'mqdefault')
+  const thumbSrc = video.custom_thumbnail_url || getThumbnailUrl(video.youtube_id, 'mqdefault')
+
+  const FeaturedBtn = ({ simplified = false }) => (
+    <button
+      onClick={(e) => { e.stopPropagation(); handleToggleFeatured(!video.is_featured) }}
+      disabled={isTogglingF || (atCap && !video.is_featured)}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '8px',
+        padding: simplified ? '8px' : '8px 12px',
+        fontFamily: 'var(--font-mono)',
+        fontSize: '10px',
+        textTransform: 'uppercase',
+        letterSpacing: '0.1em',
+        cursor: isTogglingF ? 'not-allowed' : 'pointer',
+        transition: 'all 0.2s ease',
+        background: video.is_featured ? 'var(--c-accent)' : 'transparent',
+        color: video.is_featured ? '#000' : 'var(--c-accent)',
+        border: `1px solid var(--c-accent)`,
+        fontWeight: video.is_featured ? '700' : '400',
+        opacity: isTogglingF ? 0.5 : 1,
+        borderRadius: 0,
+        minWidth: simplified ? '40px' : 'auto'
+      }}
+    >
+      {video.is_featured ? <RiStarFill size={14} /> : <RiStarLine size={14} />}
+      <span>{video.is_featured ? 'Featured' : 'Mark Featured'}</span>
+    </button>
+  )
 
   return (
     <div className="erow-wrap">
-
       <div className={`erow${isEditing ? ' erow--editing' : ''}`}>
         <img className="erow__thumb" src={thumbSrc} alt="" aria-hidden="true"
           loading="lazy" onError={(e) => { e.currentTarget.style.display = 'none' }} />
@@ -195,49 +223,27 @@ export function EditRow({ video, featuredCount, onUpdated, onDeleted }) {
         </div>
 
         <div className="erow__category">
-          <Badge variant={video.category === 'music_video' ? 'ghost' : 'accent'} size="sm">
-            {video.category === 'music_video' ? 'Music Video' : 'Rollout'}
+          <Badge 
+            variant={
+              video.category === 'music_video' ? 'ghost' : 
+              video.category === 'mobile_content' ? 'success' : 'accent'
+            } 
+            size="sm"
+          >
+            {video.category === 'music_video' && 'Music Video'}
+            {video.category === 'rollout' && 'Rollout'}
+            {video.category === 'mobile_content' && 'Mobile'}
           </Badge>
         </div>
 
         <div className="erow__featured">
-  <button
-    onClick={() => handleToggleFeatured(!video.is_featured)}
-    disabled={isTogglingF || (atCap && !video.is_featured)}
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: '8px',
-      padding: '8px 12px',
-      fontFamily: 'var(--font-mono)',
-      fontSize: '10px',
-      textTransform: 'uppercase',
-      letterSpacing: '0.1em',
-      cursor: isTogglingF ? 'not-allowed' : 'pointer',
-      transition: 'all 0.2s ease',
-      width: '100%',
-      
-      // High visibility contrast logic
-      background: video.is_featured ? 'var(--c-accent)' : 'transparent',
-      color: video.is_featured ? '#000' : 'var(--c-accent)',
-      border: `1px solid var(--c-accent)`,
-      fontWeight: video.is_featured ? '700' : '400',
-      opacity: isTogglingF ? 0.5 : 1
-    }}
-  >
-    {/* The Icon changes based on state */}
-    {video.is_featured ? <RiStarFill size={14} /> : <RiStarLine size={14} />}
-    
-    {/* The Text logic */}
-    {video.is_featured ? 'Featured' : 'Mark Featured'}
-  </button>
-</div>
+          <FeaturedBtn simplified />
+        </div>
+
         <div className="erow__actions">
           {!confirmDelete ? (
             <>
-              <Button variant="ghost" size="sm"
-                onClick={() => { setIsEditing((p) => !p); setError(null) }}>
+              <Button variant="ghost" size="sm" onClick={() => { setIsEditing((p) => !p); setError(null) }}>
                 {isEditing ? 'Cancel' : 'Edit'}
               </Button>
               <Button variant="danger" size="sm" onClick={() => setConfirmDelete(true)}>
@@ -260,7 +266,6 @@ export function EditRow({ video, featuredCount, onUpdated, onDeleted }) {
 
       {isEditing && (
         <div className="erow__edit-form">
-
           <div className="erow__field">
             <label htmlFor={`et-${video.id}`}>Title *</label>
             <input id={`et-${video.id}`} className="erow__input"
@@ -286,6 +291,7 @@ export function EditRow({ video, featuredCount, onUpdated, onDeleted }) {
               value={draft.category} onChange={f('category')}>
               <option value="music_video">Music Video</option>
               <option value="rollout">Rollout</option>
+              <option value="mobile_content">Mobile Content</option>
             </select>
           </div>
 
@@ -298,15 +304,16 @@ export function EditRow({ video, featuredCount, onUpdated, onDeleted }) {
           {error && <p className="erow__error" role="alert">{error}</p>}
 
           <div className="erow__edit-actions">
-            <Button variant="secondary" size="sm"
-              onClick={() => { setIsEditing(false); setError(null) }}>
+            <div style={{ marginRight: 'auto' }}>
+               <FeaturedBtn />
+            </div>
+            <Button variant="secondary" size="sm" onClick={() => { setIsEditing(false); setError(null) }}>
               Cancel
             </Button>
             <Button variant="primary" size="sm" isLoading={isSaving} onClick={handleSave}>
               Save Changes
             </Button>
           </div>
-
         </div>
       )}
     </div>

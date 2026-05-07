@@ -156,19 +156,7 @@ function injectCSS(id, css) {
   document.head.appendChild(tag)
 }
 
-/**
- * @param {{
- *   video: {
- *     id: string,
- *     youtube_id: string,
- *     title: string,
- *     artist_name?: string,
- *     category: string,
- *     custom_thumbnail_url?: string
- *   },
- *   onClick: () => void
- * }} props
- */
+
 export function VideoCard({ video, onClick }) {
   injectCSS('vcard-css', CSS)
 
@@ -183,8 +171,11 @@ export function VideoCard({ video, onClick }) {
     }
   }
 
-  const categoryLabel = video.category === 'music_video' ? 'Music Video' : 'Rollout'
-
+  const categoryLabel = 
+  video.category === 'music_video' ? 'Music Video' : 
+  video.category === 'mobile_content' ? 'Mobile Content' : 
+  'Rollout'; 
+  
   return (
     <button
       className="vcard"

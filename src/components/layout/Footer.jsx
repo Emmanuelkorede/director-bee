@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { RiInstagramLine, RiTiktokLine, RiTwitterXLine, RiArrowRightUpLine } from 'react-icons/ri'
+import { RiInstagramLine, RiTiktokLine, RiTwitterXLine, RiArrowRightUpLine , RiMailLine} from 'react-icons/ri'
 
 const CSS = `
   .footer-root {
@@ -160,7 +160,8 @@ function injectCSS(id, css) {
 
 export function Footer() {
   injectCSS('footer-css', CSS)
-  const year = new Date().getFullYear()
+  const year = new Date().getFullYear() ;
+
 
   return (
     <footer>
@@ -189,14 +190,14 @@ export function Footer() {
           <div className="footer-social-wrap">
             <span className="social-label">Socials</span>
             <div className="footer-socials">
-              <a href="https://www.instagram.com/directorbee_?igsh=MTl5ZmQ2NGFkazhtMw==" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.instagram.com/directorbee_?igsh=MTA0bXp5czl2aGxjaQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer">
                 <RiInstagramLine />
               </a>
-              <a href="https://www.tiktok.com/@directorbee_?_r=1&_t=ZS-967fIuAWCHQ" target="_blank" rel="noopener noreferrer">
+              <a href="https://www.tiktok.com/@directorbee_?_r=1&_t=ZS-968V6WxDdPW" target="_blank" rel="noopener noreferrer">
                 <RiTiktokLine />
               </a>
-              <a href="https://x.com/Blessing_Jobt" target="_blank" rel="noopener noreferrer">
-                <RiTwitterXLine />
+              <a href="mailto:officialdirectorbee@gmail.com">
+                          <RiMailLine />
               </a>
             </div>
           </div>

@@ -1,9 +1,10 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router'
 import { RiArrowRightLine } from 'react-icons/ri'
 
 const CSS = `
   .about-page {
-    padding: 60px 48px; /* Reduced from 100px */
+    padding: 60px 48px;
     min-height: 100vh;
     background: #000;
   }
@@ -12,7 +13,7 @@ const CSS = `
     display: flex;
     align-items: center;
     gap: 20px;
-    margin-bottom: 50px; /* Reduced from 80px */
+    margin-bottom: 50px;
   }
 
   .about-top__rule {
@@ -32,7 +33,7 @@ const CSS = `
   .about-body {
     display: grid;
     grid-template-columns: 1fr 1.2fr;
-    gap: 60px; /* Reduced from 100px */
+    gap: 60px;
     align-items: start;
   }
 
@@ -41,28 +42,38 @@ const CSS = `
     top: 100px;
   }
 
+  /* ── Image Slider ── */
   .about-image-frame {
     width: 100%;
     aspect-ratio: 4 / 5;
-    background: var(--c-border);
+    background: #111;
     border: 1px solid var(--c-border);
     position: relative;
     overflow: hidden;
-    margin-bottom: 24px; /* Reduced from 40px */
+    margin-bottom: 24px;
   }
 
-  .about-image-frame img {
+  .about-slider-img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .about-slider-img.active {
+    opacity: 1;
   }
 
   .about-name-sub {
     font-family: var(--font-display);
-    font-size: 38px; /* Slightly smaller */
+    font-size: 38px;
     color: var(--c-white);
     text-transform: uppercase;
-    margin-bottom: 8px; /* Reduced from 12px */
+    margin-bottom: 8px;
   }
 
   .about-name-sub em {
@@ -79,23 +90,24 @@ const CSS = `
     line-height: 1.8;
   }
 
+  /* ── Refined Stats ── */
   .about-stats {
     display: flex;
-    gap: 32px; /* Reduced from 48px */
-    margin-top: 32px; /* Reduced from 48px */
-    padding-top: 32px; /* Reduced from 48px */
+    gap: 32px;
+    margin-top: 32px;
+    padding-top: 32px;
     border-top: 1px solid var(--c-border);
   }
 
   .about-stat {
     display: flex;
     flex-direction: column;
-    gap: 4px; /* Reduced from 8px */
+    gap: 4px;
   }
 
   .about-stat__number {
     font-family: var(--font-display);
-    font-size: 32px; /* Slightly smaller */
+    font-size: 32px;
     color: var(--c-white);
   }
 
@@ -105,12 +117,20 @@ const CSS = `
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--c-muted);
+    line-height: 1.4;
+  }
+
+  .about-stat__sub {
+    font-size: 7px;
+    opacity: 0.6;
+    display: block;
+    margin-top: 2px;
   }
 
   .about-right {
     display: flex;
     flex-direction: column;
-    gap: 24px; /* Reduced from 40px */
+    gap: 24px;
   }
 
   .about-lead {
@@ -137,7 +157,7 @@ const CSS = `
 
   .about-credits {
     margin-top: 16px;
-    padding-top: 32px; /* Reduced from 40px */
+    padding-top: 32px;
     border-top: 1px solid var(--c-border);
   }
 
@@ -147,13 +167,13 @@ const CSS = `
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--c-muted);
-    margin-bottom: 16px; /* Reduced from 24px */
+    margin-bottom: 16px;
   }
 
   .about-credits__list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px; /* Tighter tags */
+    gap: 8px;
   }
 
   .about-credit-tag {
@@ -163,7 +183,7 @@ const CSS = `
     text-transform: uppercase;
     color: var(--c-white);
     border: 1px solid var(--c-border);
-    padding: 6px 14px; /* Slightly tighter padding */
+    padding: 6px 14px;
     transition: all 0.3s ease;
   }
 
@@ -176,7 +196,7 @@ const CSS = `
     margin-top: 20px;
     display: flex;
     align-items: center;
-    gap: 24px; /* Reduced from 32px */
+    gap: 24px;
   }
 
   .about-cta__link {
@@ -187,7 +207,7 @@ const CSS = `
     color: #000;
     background: var(--c-white);
     text-decoration: none;
-    padding: 14px 28px; /* Reduced from 18px 32px */
+    padding: 14px 28px;
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -230,18 +250,32 @@ function injectCSS(id, css) {
 }
 
 const CREDITS = [
-  'Simi', 'Olamide', 'Wagada', 'SYN',
-  'Rema', 'Asake', 'Alexa Vibez', 'Meta AI',
-  'He_is_Megar', 'Oshamo',
+  'Oshamo', 'Simi', 'Olamide', 'Wagada', 'SYN',
+  'Alexa Vibez', 'Meta AI', 'He_is_Megar'
+]
+
+const SLIDER_IMAGES = [
+  'bee.jpeg',
+  'bee2.jpeg',
+  'olamide.jpeg',
 ]
 
 export function About() {
   injectCSS('about-css', CSS)
 
+  const [currentImg, setCurrentImg] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImg((prev) => (prev + 1) % SLIDER_IMAGES.length)
+    }, 3000) 
+    return () => clearInterval(timer)
+  }, [])
+
   return (
     <main className="about-page">
       <div className="about-top">
-        <span className="about-top__label">Director Profile</span>
+        <span className="about-top__label">Director's Profile</span>
         <div className="about-top__rule" />
         <span className="about-top__label">Available Worldwide</span>
       </div>
@@ -249,7 +283,14 @@ export function About() {
       <div className="about-body">
         <div className="about-left">
           <div className="about-image-frame">
-            <img src="profile.jpeg" alt="Director Bee" />
+            {SLIDER_IMAGES.map((src, idx) => (
+              <img
+                key={src}
+                src={src}
+                alt="Director Bee"
+                className={`about-slider-img ${idx === currentImg ? 'active' : ''}`}
+              />
+            ))}
           </div>
 
           <h1 className="about-name-sub">
@@ -264,53 +305,55 @@ export function About() {
 
           <div className="about-stats">
             <div className="about-stat">
-              <span className="about-stat__number">40+</span>
+              <span className="about-stat__number">30+</span>
               <span className="about-stat__label">Projects</span>
             </div>
             <div className="about-stat">
-              <span className="about-stat__number">3+</span>
+              <span className="about-stat__number">2+</span>
               <span className="about-stat__label">Years</span>
             </div>
             <div className="about-stat">
-              <span className="about-stat__number">5+</span>
-              <span className="about-stat__label">Record Lables</span>
+              <span className="about-stat__number">3+</span>
+              <span className="about-stat__label">
+                Labels
+                <span className="about-stat__sub">Including management teams</span>
+              </span>
             </div>
           </div>
         </div>
 
         <div className="about-right">
           <p className="about-lead">
-            Building worlds frame by frame — where <em>culture meets cinema</em>, and every visual <em>scales the artist</em>.
+            Building worlds frame by frame: where <em>culture meets cinema</em>, and every visual <em>scales the artist</em>.
           </p>
 
           <p className="about-body-text">
-            Director Bee is a Lagos-based visual strategist and director whose work 
-            redefines the boundaries of African music videos. By treating every frame 
-            as a strategic asset, she creates immersive worlds that bridge the gap 
-            between raw culture and high-end commercial cinema.
+            Director Bee is a Lagos-based visual strategist and director crafting immersive visual worlds that push African music beyond the expected. Her work lives at the intersection of culture and the surreal; where grounded realities meet elevated, almost supernatural expressions.
           </p>
 
           <p className="about-body-text">
-            Her approach is rooted in narrative longevity. In an era of fleeting 
-            content, she focuses on building iconic visual signatures that help 
-            artists grow their global footprint. From creative direction to 
-            full-scale production, she ensures the visual matches the ambition 
-            of the sound.
+            Known for translating bold concepts into striking visuals, she approaches every frame as both art and strategy. From shaping an artist’s visual identity to directing full-scale productions, she builds cohesive rollouts that don’t just support the music, but expand its reach and impact.
           </p>
 
           <p className="about-body-text">
-            Operating out of Lagos, Nigeria, she is available for commissions and 
-            collaborations worldwide, bringing a sophisticated West African 
-            perspective to the global stage.
+            Her philosophy is rooted in narrative longevity. In a fast-moving content landscape, she focuses on creating distinct visual languages that position artists for global recognition. Based in Lagos, Nigeria, she works with artists and teams across markets on projects and select collaborations, bringing a refined West African perspective to the global stage.
           </p>
 
           <div className="about-credits">
-            <p className="about-credits__label">Selected Collaborators</p>
+            <p className="about-credits__label">Selected Collaborations</p>
             <div className="about-credits__list">
               {CREDITS.map((name) => (
                 <span key={name} className="about-credit-tag">{name}</span>
               ))}
             </div>
+          </div>
+
+          <div className="about-credits" style={{ borderTop: 'none', paddingTop: 0 }}>
+             <p className="about-credits__label">Management Teams</p>
+             <div className="about-credits__list">
+                <span className="about-credit-tag">Afro Lakes</span>
+                <span className="about-credit-tag">emPAWA Africa</span>
+             </div>
           </div>
 
           <div className="about-cta">

@@ -1,14 +1,16 @@
 import { useEffect, useRef } from 'react'
-import { NavLink, useLocation } from 'react-router'
+import { NavLink, useLocation , Link } from 'react-router'
 import { RiInstagramLine, RiTiktokLine, RiMailLine } from 'react-icons/ri'
 
 const NAV_LINKS = [
   { to: '/',              label: 'Cinema',        index: '01' },
   { to: '/music-videos',  label: 'Music Videos',  index: '02' },
   { to: '/rollout',       label: 'Rollout',       index: '03' },
-  { to: '/frames',        label: 'Frames',        index: '04' },
-  { to: '/about',         label: 'About',         index: '05' },
-  { to: '/contact',       label: 'Contact',       index: '06' },
+  { to: '/mobile-content',label: 'Mobile',index: '04' },
+  { to: '/frames',        label: 'Frames',        index: '05' },
+  { to: '/about',         label: 'About',         index: '06' },
+  { to: '/contact',       label: 'Contact',       index: '07' },
+
 ]
 
 const CSS = `
@@ -133,7 +135,7 @@ const CSS = `
   }
 
   .hmenu-footer {
-    margin-top: 48px;
+    margin-top: 28px;
     padding-top: 24px;
     border-top: 1px solid var(--c-border);
     display: flex;
@@ -151,6 +153,24 @@ const CSS = `
   }
 
   .hmenu-footer a:hover { color: var(--c-white); }
+
+  .start-project-btn {
+    background: var(--c-accent);
+    color: var(--c-black);
+    border: 1px solid var(--c-accent);
+    padding: 12px 24px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: background 0.2s ease, color 0.2s ease;
+    margin-top : 20px ;
+  }
+
+  .start-project-btn:hover {
+    background: var(--c-black);
+    color: var(--c-accent);
+  }
 `
 
 function injectMenuCSS() {
@@ -231,6 +251,10 @@ export function HamburgerMenu({ isOpen, onClose }) {
           ))}
         </ul>
 
+        <Link  to="/contact" className="start-project-btn">
+          Start a project
+        </Link>
+
         <div className="hmenu-footer">
           <a
             href="https://www.instagram.com/directorbee_?igsh=MTl5ZmQ2NGFkazhtMw=="
@@ -246,7 +270,7 @@ export function HamburgerMenu({ isOpen, onClose }) {
           >
             <RiTiktokLine />
           </a>
-          <a href="mailto:job21blessing@gmail.com">
+          <a href="mailto:officialdirectorbee@gmail.com">
             <RiMailLine />
           </a>
         </div>

@@ -48,6 +48,16 @@ export async function getRolloutVideos() {
   return { data, error }
 }
 
+export async function getMobileVideos() {
+  const { data, error } = await supabase
+    .from('videos')
+    .select('*')
+    .eq('category', 'mobile_content')
+    .order('sort_order', { ascending: true })
+
+  return { data, error }
+}
+
 
 export async function createVideo(videoData) {
   const { data, error } = await supabase

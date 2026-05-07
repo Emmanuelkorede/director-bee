@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import {
   getMusicVideos,
   getRolloutVideos,
+  getMobileVideos,
   createVideo,
 } from '../../hooks/useVideos'
 import { extractYoutubeId, isValidYoutubeId } from '../../lib/youtube'
@@ -234,6 +235,7 @@ export function VideoManager() {
 
   const [mvVideos,    setMvVideos]    = useState([])
   const [roVideos,    setRoVideos]    = useState([])
+  const [mobileVideos, setMobileVideos] = useState([]) // Add this
   const [loading,     setLoading]     = useState(true)
   const [loadError,   setLoadError]   = useState(null)
   const [activeTab,   setActiveTab]   = useState('music_video')
@@ -243,24 +245,27 @@ export function VideoManager() {
   const [isSaving,    setIsSaving]    = useState(false)
 
   // Derived — count featured across both categories
-  const allVideos      = [...mvVideos, ...roVideos]
+  const allVideos      = [...mvVideos, ...roVideos, ...mobileVideos]
   const featuredCount  = allVideos.filter((v) => v.is_featured).length
-  const displayVideos  = activeTab === 'music_video' ? mvVideos : roVideos
-
+  const displayVideos = 
+  activeTab === 'music_video' ? mvVideos : 
+  activeTab === 'rollout' ? roVideos : 
+  mobileVideos;
   // ── Load ────────────────────────────────────────────────────────────────
   useEffect(() => {
     let cancelled = false
 
     async function load() {
       setLoading(true)
-      const [mv, ro] = await Promise.all([getMusicVideos(), getRolloutVideos()])
+      const [mv, ro , mobile] = await Promise.all([getMusicVideos(), getRolloutVideos(), getMobileVideos()])
       if (cancelled) return
 
-      if (mv.error || ro.error) {
-        setLoadError((mv.error || ro.error).message)
+      if (mv.error || ro.error || mobile.error) {
+        setLoadError((mv.error || ro.error || mobile.error).message)
       } else {
         setMvVideos(mv.data ?? [])
         setRoVideos(ro.data ?? [])
+        setMobileVideos(mobile.data ?? []) // Set mobile videos
       }
       setLoading(false)
     }
@@ -305,9 +310,12 @@ export function VideoManager() {
     // Prepend to the correct list
     if (data.category === 'music_video') {
       setMvVideos((prev) => [data, ...prev])
-    } else {
+    } else if (data.category === 'rollout') {
       setRoVideos((prev) => [data, ...prev])
+    } else {
+      setMobileVideos((prev) => [data, ...prev]) 
     }
+
 
     setForm(EMPTY_FORM)
     setShowForm(false)
@@ -316,13 +324,18 @@ export function VideoManager() {
 
   // ── EditRow callbacks ────────────────────────────────────────────────────
   function handleUpdated(updated) {
-    const setter = updated.category === 'music_video' ? setMvVideos : setRoVideos
+    const setter = 
+      updated.category === 'music_video' ? setMvVideos : 
+      updated.category === 'rollout' ? setRoVideos : 
+      setMobileVideos;
+
     setter((prev) => prev.map((v) => v.id === updated.id ? updated : v))
   }
 
   function handleDeleted(id) {
     setMvVideos((prev) => prev.filter((v) => v.id !== id))
     setRoVideos((prev) => prev.filter((v) => v.id !== id))
+    setMobileVideos((prev) => prev.filter((v) => v.id !== id)) // Add this line
   }
 
   const f = (field) => (e) =>
@@ -378,6 +391,7 @@ export function VideoManager() {
             onChange={f('category')}>
             <option value="music_video">Music Video</option>
             <option value="rollout">Rollout</option>
+            <option value="mobile_content">Mobile Content</option>
           </select>
         </div>
 
@@ -407,8 +421,9 @@ export function VideoManager() {
         {[
           { key: 'music_video', label: 'Music Videos', count: mvVideos.length },
           { key: 'rollout',     label: 'Rollout',      count: roVideos.length },
+          { key: 'mobile_content',     label: 'Mobile Content',  count: mobileVideos.length },
         ].map(({ key, label, count }) => (
-          <button
+          <button 
             key={key}
             role="tab"
             aria-selected={activeTab === key}

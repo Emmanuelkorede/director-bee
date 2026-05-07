@@ -121,7 +121,7 @@ export function Rollout() {
           </div>
           {!loading && !error && (
             <span className="rollout-count">
-              {String(videos.length).padStart(2, '0')} clips
+              ACTIVE COLLECTION
             </span>
           )}
         </div>

@@ -50,9 +50,7 @@ const CSS = `
     opacity: 0.6;
   }
 
-  /* ── The Grid ──
-     Columns: 2 wide + 1 tall on the right, then flips.
-     grid-auto-rows keeps cards proportional without fixed heights. */
+  /* ── The Grid ── */
   .vgrid-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -60,13 +58,11 @@ const CSS = `
     gap: 3px;
   }
 
-  /* Every 7th card (1st in each visual "block") spans 2 cols × 2 rows */
   .vgrid-grid .vcard:nth-child(7n+1) {
     grid-column: span 2;
     grid-row: span 2;
   }
 
-  /* Every 7th+3 card spans 1 col × 2 rows (the tall right column) */
   .vgrid-grid .vcard:nth-child(7n+3) {
     grid-row: span 2;
   }
@@ -98,65 +94,50 @@ const CSS = `
     100% { background-position: -200% 0; }
   }
 
-  /* ── Error state ── */
-  .vgrid-error {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 80px 0;
-    color: var(--c-muted);
-  }
-
-  .vgrid-error__code {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    color: var(--c-accent);
-    text-transform: uppercase;
-  }
-
-  .vgrid-error__msg {
-    font-family: var(--font-display);
-    font-size: 18px;
-    font-weight: 300;
-    color: var(--c-white);
-  }
-
-  /* ── Responsive ── */
+  /* ── Responsive Mobile Feed (Matching Screenshot) ── */
   @media (max-width: 900px) {
-    .vgrid-grid,
-    .vgrid-skeleton {
+    .vgrid-grid, .vgrid-skeleton {
       grid-template-columns: repeat(2, 1fr);
       grid-auto-rows: 220px;
     }
-
     .vgrid-grid .vcard:nth-child(7n+1) { grid-column: span 2; grid-row: span 2; }
-    .vgrid-grid .vcard:nth-child(7n+3) { grid-row: span 1; }
-    .vgrid-skel-item:nth-child(3) { grid-row: span 1; }
   }
 
   @media (max-width: 560px) {
-    .vgrid-section { padding: 32px 16px 60px; }
+    .vgrid-section { padding: 24px 0 60px; } /* Flush sides like a feed */
+    .vgrid-header { padding: 0 16px 20px; }
 
-    .vgrid-grid,
-    .vgrid-skeleton {
-      grid-template-columns: 1fr;
-      grid-auto-rows: 240px;
+    .vgrid-grid, .vgrid-skeleton {
+      grid-template-columns: repeat(2, 1fr); /* 2 columns base */
+      grid-auto-rows: auto; /* Height determined by content aspect-ratio */
+      gap: 2px; /* Tight gaps like the reference image */
     }
 
-    /* Reset all span overrides on mobile — single column feed */
+    /* Video Card specific override for mobile feed aspect ratio */
+    .vgrid-grid .vcard {
+        aspect-ratio: 16 / 9;
+        height: auto;
+    }
+
+    /* Pattern: Item 1 & 2 are 50% width, Item 3 is 100% width, repeat */
+    /* This creates: 
+       [Video 1] [Video 2]
+       [     Video 3     ] 
+    */
+    .vgrid-grid .vcard:nth-child(3n+3) {
+      grid-column: span 2; 
+    }
+
+    /* Reset desktop/tablet spans */
     .vgrid-grid .vcard:nth-child(7n+1),
     .vgrid-grid .vcard:nth-child(7n+3) {
-      grid-column: span 1;
-      grid-row: span 1;
+      grid-column: auto;
+      grid-row: auto;
     }
 
-    .vgrid-skel-item:nth-child(1),
-    .vgrid-skel-item:nth-child(3) {
-      grid-column: span 1;
-      grid-row: span 1;
+    /* Apply the 3n+3 span after resetting */
+    .vgrid-grid .vcard:nth-child(3n+3) {
+      grid-column: span 2;
     }
   }
 `

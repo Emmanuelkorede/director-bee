@@ -111,7 +111,7 @@ export function MusicVideos() {
           </div>
           {!loading && !error && (
             <span className="archive-count">
-              {String(videos.length).padStart(2, '0')} works
+              ACTIVE COLLECTION
             </span>
           )}
         </div>
