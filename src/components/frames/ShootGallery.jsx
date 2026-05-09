@@ -335,7 +335,7 @@ export function ShootGallery() {
       {/* Page header */}
       <div className="sgallery-header">
         <div>
-          <p className="sgallery-eyebrow">Behind the Scenes</p>
+          <p className="sgallery-eyebrow">Stills from projects</p>
           <h1 className="sgallery-title" id="frames-heading">Frames</h1>
         </div>
         {!loading && !error && (

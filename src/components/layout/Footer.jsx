@@ -207,7 +207,7 @@ export function Footer() {
       <div className="footer-legal">
         <span>© {year} Director Bee</span>
         <span>site by <a href="https://www.tiktok.com/@job.emmanuel.dev?_r=1&_t=ZS-969VnNy8Cd5" target="_blank" rel="noopener noreferrer">Job Emmanuel</a></span>
-        <span>Creative Direction — Visual Strategy — Narrative</span>
+        <span>Creative Direction — Visual Strategy — Narrative Director</span>
       </div>
     </footer>
   )

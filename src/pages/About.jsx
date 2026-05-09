@@ -351,8 +351,10 @@ export function About() {
           <div className="about-credits" style={{ borderTop: 'none', paddingTop: 0 }}>
              <p className="about-credits__label">Management Teams</p>
              <div className="about-credits__list">
-                <span className="about-credit-tag">Afro Lakes</span>
-                <span className="about-credit-tag">emPAWA Africa</span>
+              <span className="about-credit-tag">JMB records</span>
+              <span className="about-credit-tag">emPAWA Africa</span>
+                <span className="about-credit-tag">Afrolit</span>
+                
              </div>
           </div>
 

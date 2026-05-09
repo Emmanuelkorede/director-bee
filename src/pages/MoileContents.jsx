@@ -133,14 +133,14 @@ export function MobileContent() {
           </div>
           {!loading && !error && (
             <span className="mobile-archive-count">
-              ACTIVE COLLECTION
+              PHONE CINEMATIC CONTENT
             </span>
           )}
         </div>
 
         <p className="mobile-archive-desc">
-          Short-form narratives and native mobile experiences 
-          designed for vertical consumption and high-impact engagement.
+          Short-form narratives and organic mobile experiences 
+          designed for vertical, social, and high-impact engagement.
         </p>
 
         {loading && (
