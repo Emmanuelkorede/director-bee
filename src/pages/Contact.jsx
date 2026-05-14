@@ -192,7 +192,6 @@ const CSS = `
     .contact-row { grid-template-columns: 1fr; }
   }
 `
-
 function injectCSS(id, css) {
   if (typeof document === 'undefined') return
   if (document.getElementById(id)) return
@@ -302,7 +301,7 @@ export function Contact() {
             <RiCheckLine className="contact-success__icon" />
             <p className="contact-success__title">Inquiry Sent</p>
             <p className="contact-success__text">
-              Thank you. Your mail client has been prompted.<br />
+              Thank you. Your mail  has been sent.<br />
               Expect a response within 48 hours.
             </p>
             <Button onClick={() => { setSubmitted(false); setForm(EMPTY) }}>
@@ -356,7 +355,7 @@ export function Contact() {
             </div>
 
             <div className="contact-field">
-              <label>Timeline</label>
+              <label> Execution Timeline</label>
               <input className="contact-input" value={form.timeline} onChange={f('timeline')} placeholder="e.g. Next Month" />
             </div>
 
