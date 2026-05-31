@@ -215,9 +215,9 @@ const PROJECT_TYPES = [
 const BUDGET_RANGES = [
   'Below ₦1M',
   '₦1M - ₦2M',
-  '₦2M - ₦4M',
-  '₦4M - ₦7M',
-  '₦10M+',
+  '₦2M - ₦5M',
+  '₦10M - ₦15M',
+  '₦15M+',
 ]
 
 const EMPTY = { email: '', phone: '', artist: '', type: '', timeline: '', hasConcept: '', budget: '', message: '' }
